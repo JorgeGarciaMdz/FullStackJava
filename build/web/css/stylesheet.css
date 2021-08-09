@@ -1,0 +1,36 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30/07/2021, 09:08:14
+    Author     : jorge
+*/
+.button-capacity {
+    background: rgb(229,240,237);
+    background: -moz-radial-gradient(circle, rgba(229,240,237,1) 42%, rgba(107,104,108,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(229,240,237,1) 42%, rgba(107,104,108,1) 100%);
+    background: radial-gradient(circle, rgba(229,240,237,1) 42%, rgba(107,104,108,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e5f0ed",endColorstr="#6b686c",GradientType=1);  
+}
+
+
+.body {
+    background: rgb(34,193,195);
+    background: -moz-radial-gradient(circle, rgba(34,193,195,1) 53%, rgba(107,104,108,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(34,193,195,1) 53%, rgba(107,104,108,1) 100%);
+    background: radial-gradient(circle, rgba(34,193,195,1) 53%, rgba(107,104,108,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#22c1c3",endColorstr="#6b686c",GradientType=1);  
+} 
+
+.nav-color {
+    background: rgb(34,193,195);
+    background: -moz-radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(77,242,128,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(77,242,128,1) 100%);
+    background: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(77,242,128,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#22c1c3",endColorstr="#4df280",GradientType=1);
+}
+
+
+
