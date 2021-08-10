@@ -15,6 +15,14 @@ and open the template in the editor.
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#22c1c3",endColorstr="#6b686c",GradientType=1);  
 }
 
+.body-employee {
+    background: rgb(131,58,180);
+    background: -moz-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(51,230,157,1) 46%, rgba(252,176,69,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(51,230,157,1) 46%, rgba(252,176,69,1) 100%);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(51,230,157,1) 46%, rgba(252,176,69,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#fcb045",GradientType=1); 
+}
+
 .nav-color {
     background: rgb(34,193,195);
     background: -moz-radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(77,242,128,1) 100%);
