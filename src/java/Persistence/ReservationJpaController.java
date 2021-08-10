@@ -6,6 +6,7 @@
 package Persistence;
 
 import Entity.Reservation;
+import Entity.Reservation_;
 import Persistence.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +20,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Date;
 import Entity.Room;
+import Entity.Room_;
+import javax.persistence.criteria.JoinType;
 
 /**
  *
@@ -124,6 +127,21 @@ public class ReservationJpaController implements Serializable {
             return em.find(Reservation.class, id);
         } finally {
             em.close();
+        }
+    }
+    
+    public List<Reservation> findByRoomId( Long id){
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+        root.fetch("room", JoinType.LEFT);
+        try {
+            cq.select(root).where(cb.equal(root.get(Reservation_.room).get("id"), id));
+            return em.createQuery(cq).getResultList();
+        } finally {
+            if( em != null)
+                em.close();
         }
     }
 

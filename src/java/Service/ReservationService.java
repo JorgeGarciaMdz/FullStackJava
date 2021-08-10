@@ -26,10 +26,9 @@ public class ReservationService {
         return reservationJpaController.findReservation(new Long(id));
     }
     
-    public List<Reservation> findByRoomId( int id ){
-        System.out.println("reservation room " + id);
-        //return reservationJpaController.findByRoomId(roomService.findById( id ));
-        return null;
+    public List<Reservation> findByRoomId( int room_id ){
+        System.out.println("reservation room " + room_id);
+        return reservationJpaController.findByRoomId( new Long(room_id));        
     }
     
     public List<Reservation> findAll(){
