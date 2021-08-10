@@ -27,7 +27,6 @@ public class Index extends HttpServlet {
     private final EmployeeService es = new EmployeeService();
     
     public Index(){
-        es.initEmployee();
     }
 
     /**

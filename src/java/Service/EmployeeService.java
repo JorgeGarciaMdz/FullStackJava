@@ -27,14 +27,6 @@ public class EmployeeService {
         employeeJpaController = new EmployeeJpaController(FabricaEMF.getInstance().getEMF("HotelPU"));
     }
     
-    public void initEmployee(){
-        employeeJpaController.create(new Employee("jor123", "1234", EmployeeType.employee, 12345, "jorge", "garcia", new Date()));
-        employeeJpaController.create(new Employee("admin", "admin", EmployeeType.administrator, 9870, "admin1", "admin 1", new Date()));
-        Employee e = new Employee("juan", "juan", EmployeeType.employee, 345, "juan", "juan", new Date());
-        e.setDischarge_date(new Date());
-        employeeJpaController.create(e);
-    }
-    
     public Employee findByUserPass( String user, String pass){
         return employeeJpaController.findEmployeeByUserPass(user, pass);
     }

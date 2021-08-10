@@ -68,8 +68,7 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
-    public Reservation(Long id, Date date_in, Date date_out, Date check_in, Date check_out, Room room, Guest guest, Employee employee) {
-        this.id = id;
+    public Reservation( Date date_in, Date date_out, Date check_in, Date check_out, Room room, Guest guest, Employee employee) {
         this.date_in = date_in;
         this.date_out = date_out;
         this.check_in = check_in;

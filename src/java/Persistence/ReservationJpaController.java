@@ -13,8 +13,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
+import Entity.Room;
 
 /**
  *
@@ -109,7 +113,8 @@ public class ReservationJpaController implements Serializable {
             }
             return q.getResultList();
         } finally {
-            em.close();
+            if( em != null )
+                em.close();
         }
     }
 
