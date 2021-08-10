@@ -136,8 +136,15 @@ public class ReservationJpaController implements Serializable {
         CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
         Root<Reservation> root = cq.from(Reservation.class);
         root.fetch("room", JoinType.LEFT);
+        int year = new Date().getYear();
+        int month = new Date().getMonth();
+        
+        Predicate[] predicates = new Predicate[3];
+        predicates[0] = cb.equal(root.get(Reservation_.room).get("id"), id); 
+        predicates[1] = cb.greaterThanOrEqualTo(root.get("date_in"), new Date(year, month, 0) );
+        predicates[2] = cb.lessThanOrEqualTo(root.get("date_out"), new Date(year, month,30));
         try {
-            cq.select(root).where(cb.equal(root.get(Reservation_.room).get("id"), id));
+            cq.select(root).where(predicates);
             return em.createQuery(cq).getResultList();
         } finally {
             if( em != null)

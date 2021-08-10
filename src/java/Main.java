@@ -41,7 +41,9 @@ public class Main {
         rs.create(new Room((short) 0, "0H", (short) 4, 233, RoomType.multi_person));
         
         ReservationService res = new ReservationService();
-        res.create( new Reservation(new Date(2021, 7, 11), new Date(2021, 7, 18), null, null, rs.findById(5), gs.findById(4), es.findById(1)));
+        res.create( new Reservation(new Date(new Date().getYear(), 7, 11), new Date(new Date().getYear(), 7, 18), null, null, rs.findById(5), gs.findById(4), es.findById(1)));
+        res.create( new Reservation(new Date(new Date().getYear(), 6, 30), new Date(new Date().getYear(), 7, 3), null, null, rs.findById(5), gs.findById(4), es.findById(1)));
+        res.create( new Reservation(new Date(new Date().getYear(), 7, 30), new Date(new Date().getYear(), 8, 3), null, null, rs.findById(5), gs.findById(4), es.findById(1)));
     }
     
 }
