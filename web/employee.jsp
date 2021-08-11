@@ -38,6 +38,9 @@
         </nav>
         <% if (session.getAttribute("user") != null) { %>
         <div id="root"></div>
+        <script>
+            var employee_id = <%= session.getAttribute("user_id").toString() %>
+        </script>
         
         <script src="js/employee.js"></script>
         <script src="js/jquery-1.4.4.min.js" ></script>

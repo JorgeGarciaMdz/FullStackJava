@@ -49,7 +49,7 @@ public class Person implements Serializable{
     protected String lastname;
     
     @NotNull
-    @Column(name="birtday", nullable=false)
+    @Column(name="birthday", nullable=false)
     @Temporal(TemporalType.DATE)
     protected Date birthday;
 

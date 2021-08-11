@@ -160,9 +160,12 @@ function getDay(day) {
             </div>
             <div class="row">
                 <div class="col-md-4"><label>Fecha Nacimiento</label></div>
-                <div class="col-md-2"><input type="text" width="10px" id="dia-form" placeholder="dia ( 1 ) "></div>
-                <div class="col-md-2"><input type="text" width="10px" id="mes-form" placeholder="mes ( 3 ) "></div>
-                <div class="col-md-2"><input type="text" width="10px" id="anio-form"placeholder="anio ( 1999 )"></div>
+                <div class="col-md-1"><input type="text" width="10px" id="dia-form" placeholder="dia ( 1 ) " size="10"></div>
+                <div class="col-md-1"><input type="text" width="10px" id="mes-form" placeholder="mes ( 3 ) " size="10"></div>
+                <div class="col-md-1"><input type="text" width="10px" id="anio-form"placeholder="anio ( 1999 )" size="10"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><button class="btn btn-primary" onclick="submitReserve()">Realizar Reserva</button></div>
             </div>
              </div>`
     } else if (day_in !== null && day_out !== null) {
@@ -174,6 +177,19 @@ function getDay(day) {
 
 function deshacerForm() {
     document.getElementById("form-reserve").innerHTML = ``;
+}
+
+function submitReserve(){
+    let name = document.getElementById("name-form").value;
+    let lastname = document.getElementById("lastname-form").value;
+    let dni = document.getElementById("dni-form").value;
+    let day = document.getElementById("dia-form").value;
+    let month = document.getElementById("mes-form").value;
+    let year = document.getElementById("anio-form").value;
+    let profession = document.getElementById("profesion-form").value;
+    let birthday = new Date(year, month - 1, day);
+    console.log(employee_id);
+    console.log("name: " + name + " lastname " + lastname + " dni " + dni + " profesion " + profession + " birthday " + birthday);
 }
 
 

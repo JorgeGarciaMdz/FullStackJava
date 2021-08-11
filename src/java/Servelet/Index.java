@@ -98,6 +98,7 @@ public class Index extends HttpServlet {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", e.getName());
             session.setAttribute("type", e.getType());
+            session.setAttribute("user_id", e.getId());
             if (e.getType() == EmployeeType.administrator) {
 
                 response.sendRedirect("administrator.jsp");
