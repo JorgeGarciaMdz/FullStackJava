@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Entity.Reservation;
+import java.util.Date;
 
 /**
  *
@@ -23,7 +24,7 @@ import Entity.Reservation;
  */
 @WebServlet(name = "ReservationSV", urlPatterns = {"/api/v1/reservation/*"})
 public class ReservationSV extends HttpServlet {
-    
+
     private final ReservationService rs;
     private final Gson _gson;
 
@@ -31,8 +32,6 @@ public class ReservationSV extends HttpServlet {
         rs = new ReservationService();
         _gson = new Gson();
     }
-    
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,7 +50,7 @@ public class ReservationSV extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ReservationSV</title>");            
+            out.println("<title>Servlet ReservationSV</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ReservationSV at " + request.getContextPath() + "</h1>");
@@ -73,17 +72,17 @@ public class ReservationSV extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        if( request.getParameter("id") != null ){
+        if (request.getParameter("id") != null) {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            out.print(_gson.toJson(rs.findById( Integer.parseInt(request.getParameter("id") ))));
+            out.print(_gson.toJson(rs.findById(Integer.parseInt(request.getParameter("id")))));
             out.flush();
             return;
-        } else if( request.getParameter("room_id") != null ){
+        } else if (request.getParameter("room_id") != null) {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             out.print(_gson.toJson(rs.findByRoomId(Integer.parseInt(request.getParameter("room_id")))));
-        } else if ( request.getPathInfo() == null || request.getPathInfo().equals("/") ) {
+        } else if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             out.print(_gson.toJson(rs.findAll()));
@@ -106,31 +105,44 @@ public class ReservationSV extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        if ( request.getPathInfo() == null || request.getPathInfo().equals("/")){
+        if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
             Reservation r = _gson.fromJson(JsonToObject(request), Reservation.class);
             rs.create(r);
-            if(r.getId() == null ){
+            if (r.getId() == null) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+            return;
+        }
+        if (request.getPathInfo().equals("/data")) {
+            DTO_Reservation dto_r = _gson.fromJson(JsonToObject(request), DTO_Reservation.class);
+            rs.create(dto_r);
+            if (dto_r.getId() != 0) {
+                response.setContentType("application/json");
+                PrintWriter out = response.getWriter();
+                out.print(_gson.toJson(dto_r));
+                out.flush();
+            } else {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
     }
-    
+
     @Override
-    protected void doPut( HttpServletRequest request, HttpServletResponse reponse)
+    protected void doPut(HttpServletRequest request, HttpServletResponse reponse)
             throws ServletException, IOException {
-        if( request.getPathInfo() == null || request.getPathInfo().equals("/")){
+        if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
             Reservation r = _gson.fromJson(JsonToObject(request), Reservation.class);
-            if(!rs.update(r)){
+            if (!rs.update(r)) {
                 reponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
     }
-    
+
     @Override
-    protected void doDelete( HttpServletRequest request, HttpServletResponse reponse)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse reponse)
             throws ServletException, IOException {
-        if( request.getParameter("id") != null ){
-            rs.delete(Integer.parseInt(request.getParameter("id")));            
+        if (request.getParameter("id") != null) {
+            rs.delete(Integer.parseInt(request.getParameter("id")));
         }
     }
 
@@ -143,15 +155,14 @@ public class ReservationSV extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    private String JsonToObject( HttpServletRequest request) throws IOException{
-        StringBuilder buffer = new StringBuilder();
-            BufferedReader reader = request.getReader();
-            String line;
-            while( ( line = reader.readLine()) != null){
-                buffer.append(line);
-            }
-            return buffer.toString();
-    }
 
+    private String JsonToObject(HttpServletRequest request) throws IOException {
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        return buffer.toString();
+    }
 }

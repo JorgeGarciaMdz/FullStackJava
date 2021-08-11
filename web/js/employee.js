@@ -10,8 +10,8 @@
 function getEmployee() {
     console.log("Realizando get ");
     fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/')
-            .then(response => response.json())
-            .then(data => console.log(data));
+        .then(response => response.json())
+        .then(data => console.log(data));
 }
 function newReserve() {
     let menu = `<div class="container">
@@ -41,26 +41,28 @@ async function showRooms(capacity) {
 </thead>
 <tbody>`
 
-    await  fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/room?capacity=' + capacity)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                data.forEach(element => {
-                    table += `<tr>
+    await fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/room?capacity=' + capacity)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            data.forEach(element => {
+                table += `<tr>
             <th scope="row">` + element.door + `</th>
             <td>` + element.floor + `</td>
             <td>` + element.capacity + `</td>
             <td>` + element.price + `</td>
-            <td><button class="btn btn-primary" onclick="detalleRoom( ${element.id}, '${element.door}' )">Detalle</button></td>
+            <td><button class="btn btn-primary" onclick="detailsRoom( ${element.id}, '${element.door}' )">Detalle</button></td>
           </tr>`
-                });
-                table += ` </tbody>
-        </table><div id="detailsRoom"></div>`;
-                document.getElementById("rooms").innerHTML = table;
             });
+            table += ` </tbody>
+        </table><div id="detailsRoom"></div>`;
+            document.getElementById("rooms").innerHTML = table;
+        });
 }
 
-function detalleRoom(room_id, room_door) {
+var room_id;
+function detailsRoom(id_room, room_door) {
+    room_id = id_room;
     let calendar = `<br><p class="lead">
     Habitacion: <b>${room_door}</b> <br/> Para realizar una reserva seleccione dia de entrada y dia de salida` + `
     </p>
@@ -77,16 +79,16 @@ function detalleRoom(room_id, room_door) {
   </tr>
 </thead>
 <tbody>`;
-    fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/reservation?room_id=' + room_id)
-            .then(response => response.json())
-            .then(data => {
+    fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/reservation?room_id=' + id_room)
+        .then(response => response.json())
+        .then(data => {
 
-                document.getElementById("detailsRoom").innerHTML = calendar;
-                console.log(data);
-                calendar += generateCalendar() + `</table><div id="form-reserve"></div>`;
-                document.getElementById("detailsRoom").innerHTML = calendar;
-                selectedDay(data);
-            });
+            document.getElementById("detailsRoom").innerHTML = calendar;
+            console.log(data);
+            calendar += generateCalendar() + `</table><div id="form-reserve"></div>`;
+            document.getElementById("detailsRoom").innerHTML = calendar;
+            selectedDay(data);
+        });
 }
 
 function generateCalendar() {
@@ -141,28 +143,28 @@ function getDay(day) {
             <div class="row">
                 <div class="col-md-6">
                     <label>Nombre:</label>
-                    <input type="text" name="name" id="name-form">
+                    <input type="text" name="name" id="name-form" required>
                 </div>
                 <div class="col-md-6">
                     <label>Apellido:</label>
-                    <input type="text" name="lastname" id="lastname-form">
+                    <input type="text" name="lastname" id="lastname-form" required>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <label>Dni:</label>
-                    <input type="text" name="dni" id="dni-form">
+                    <input type="text" name="dni" id="dni-form" required>
                 </div>
                 <div class="col-md-6">
                     <label>Profesion:</label>
-                    <input type="text" name="profesion" id="profesion-form">
+                    <input type="text" name="profesion" id="profesion-form" required>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4"><label>Fecha Nacimiento</label></div>
-                <div class="col-md-1"><input type="text" width="10px" id="dia-form" placeholder="dia ( 1 ) " size="10"></div>
-                <div class="col-md-1"><input type="text" width="10px" id="mes-form" placeholder="mes ( 3 ) " size="10"></div>
-                <div class="col-md-1"><input type="text" width="10px" id="anio-form"placeholder="anio ( 1999 )" size="10"></div>
+                <div class="col-md-1"><input type="text" width="10px" id="dia-form" placeholder="30" size="13" required></div>
+                <div class="col-md-1"><input type="text" width="10px" id="mes-form" placeholder="12" size="15" required></div>
+                <div class="col-md-1"><input type="text" width="10px" id="anio-form"placeholder="1999" size="10" required></div>
             </div>
             <div class="row">
                 <div class="col-md-3"><button class="btn btn-primary" onclick="submitReserve()">Realizar Reserva</button></div>
@@ -177,9 +179,13 @@ function getDay(day) {
 
 function deshacerForm() {
     document.getElementById("form-reserve").innerHTML = ``;
+    day_in = null;
+    day_out = null;
 }
 
-function submitReserve(){
+function submitReserve() {
+    let isvalid = true;
+    let reserve;
     let name = document.getElementById("name-form").value;
     let lastname = document.getElementById("lastname-form").value;
     let dni = document.getElementById("dni-form").value;
@@ -188,8 +194,60 @@ function submitReserve(){
     let year = document.getElementById("anio-form").value;
     let profession = document.getElementById("profesion-form").value;
     let birthday = new Date(year, month - 1, day);
-    console.log(employee_id);
-    console.log("name: " + name + " lastname " + lastname + " dni " + dni + " profesion " + profession + " birthday " + birthday);
+    console.log("id employee " + employee_id + "  room_id " + room_id);
+    if (name.length === 0) {
+        invalid("name-form");
+        isvalid = false;
+    }
+    if (lastname.length === 0) {
+        invalid("lastname-form");
+        isvalid = false;
+    }
+    if (dni.length === 0) {
+        invalid("dni-form");
+        isvalid = false;
+    }
+    if (day.length === 0) {
+        invalid("dia-form");
+        isvalid = false;
+    }
+    if (month.length === 0) {
+        invalid("mes-form");
+        isvalid = false;
+    }
+    if (year.length === 0) {
+        invalid("anio-form");
+        isvalid = false;
+    }
+    if (profession.length === 0) {
+        invalid("profesion-form");
+        isvalid = false;
+    }
+
+    if (isvalid) {
+        f = new Date();
+        console.log(f.getFullYear() + "  " + f.getMonth() );
+        input = new Date(f.getFullYear(), f.getMonth(), day_in);
+        output = new Date(f.getFullYear(), f.getMonth(), day_out);
+        reserve =
+        {
+            date_in: input,
+            date_out: output,
+            room_id: room_id,
+            employee_id: employee_id,
+            name: name,
+            lastname: lastname,
+            dni: dni,
+            birthday: birthday,
+            prefession: profession
+        }
+        console.log(reserve);
+    }
+}
+
+function invalid(id) {
+    document.getElementById(id).style = "border: 2px dashed red; background-image: linear-gradient(to right, pink, lightgreen);";
+    document.getElementById(id).setAttribute("placeholder", "requerido");
 }
 
 
