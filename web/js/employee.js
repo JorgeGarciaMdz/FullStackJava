@@ -226,7 +226,7 @@ function submitReserve() {
 
     if (isvalid) {
         f = new Date();
-        console.log(f.getFullYear() + "  " + f.getMonth() );
+        console.log(f.getFullYear() + "  " + f.getMonth());
         input = formatDate(new Date(f.getFullYear(), f.getMonth(), day_in).toDateString());
         output = formatDate(new Date(f.getFullYear(), f.getMonth(), day_out).toDateString());
         reserve =
@@ -239,7 +239,7 @@ function submitReserve() {
             lastname: lastname,
             dni: dni,
             birthday: birthday,
-            prefession: profession
+            profession: profession
         }
         console.log(reserve);
         fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/reservation/data', {
@@ -248,10 +248,36 @@ function submitReserve() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(reserve)
-            
-        }).then( response => response.json())
-            .then( data => {
-                console.log(" Respuesta del back-end " + data);
+
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data !== null) {
+                    let table = `<br><table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col"># Id</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Apellido</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Profesion</th>
+                                        <th scope="col">Fecha Ingreso</th>
+                                        <th scope="col">Fecha Egreso</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                          <th scope="row"> ${data.id}</th>
+                                          <td>${data.name}</td>
+                                          <td>${data.lastname}</td>
+                                          <td>${data.dni}</td>
+                                          <td>${data.profession}</td>
+                                          <td>${data.date_in}</td>
+                                          <td>${data.date_out}</td>
+                                        </tr>
+                                    </tgody></table>`;
+                    document.getElementById("form-reserve").innerHTML = table;
+                }
             });
     }
 }
@@ -261,12 +287,27 @@ function invalid(id) {
     document.getElementById(id).setAttribute("placeholder", "requerido");
 }
 
-function formatDate( date ) {
+function formatDate(date) {
     newdate = date.split(" ");
     date = '';
     date += newdate[1] + ' ' + newdate[2] + ', ' + newdate[3] + ' 00:00:00 AM';
     return date;
 }
 
+async function showCreateReserve(data) {
+
+
+    await data.forEach(guest => {
+        table += `<tr>
+                  <th scope="row"></th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>`
+    });
+    table += `</tbody></table>`;
+    document.getElementById("form-reserve").innerHTML = table;
+}
 
 
