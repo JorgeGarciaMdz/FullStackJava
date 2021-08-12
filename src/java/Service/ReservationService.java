@@ -55,7 +55,7 @@ public class ReservationService {
         System.out.println(g.toString());
         guestService.create(g);
         System.out.println(g.toString());
-        /*if( g.getId() != null){
+        if( g.getId() != null){
             Reservation r = new Reservation();
             r.setDate_in(dto_r.getDate_in());
             r.setDate_out(dto_r.getDate_out());
@@ -66,7 +66,7 @@ public class ReservationService {
             if( r.getId() != null ){
                 dto_r.setId(Integer.parseInt(r.getId().toString()));
             }
-        } */
+        }
         return dto_r;
     }
     

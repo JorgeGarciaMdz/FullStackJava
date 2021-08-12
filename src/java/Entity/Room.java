@@ -29,7 +29,7 @@ import javax.persistence.Table;
 @Table(name = "room")
 public class Room implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name="id", nullable = false)
     private Long id;
     
