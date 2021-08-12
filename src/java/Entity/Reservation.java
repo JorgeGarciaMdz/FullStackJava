@@ -139,6 +139,9 @@ public class Reservation implements Serializable {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Reservation{" + "id=" + id + ", date_in=" + date_in + ", date_out=" + date_out + ", check_in=" + check_in + ", check_out=" + check_out + ", room=" + room + ", guest=" + guest + ", employee=" + employee + '}';
+    }
 }

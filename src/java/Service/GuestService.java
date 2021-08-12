@@ -25,6 +25,10 @@ public class GuestService {
     public Guest findById(int id) {
         return guestJpaController.findGuest(new Long(id));
     }
+    
+    public Guest findByDni( int dni ){
+        return guestJpaController.findGuestByDni(new Long (dni));
+    }
 
     public List<Guest> findAll() {
         return guestJpaController.findGuestEntities();

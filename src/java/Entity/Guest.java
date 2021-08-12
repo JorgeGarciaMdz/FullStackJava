@@ -43,5 +43,10 @@ public class Guest extends Person implements Serializable{
     public void setProfession(String profession) {
         this.profession = profession;
     }
+
+    @Override
+    public String toString() {
+        return "Guest{" + "profession=" + profession + '}' + super.toString();
+    }
     
 }

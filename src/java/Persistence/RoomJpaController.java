@@ -120,23 +120,23 @@ public class RoomJpaController implements Serializable {
         try {
             return em.find(Room.class, id);
         } finally {
-            em.close();
+                em.close();
         }
     }
-    
-    public List<Room> findByCapacity( Long capacity){
+
+    public List<Room> findByCapacity(Long capacity) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> cq = cb.createQuery(Room.class);
         Root<Room> root = cq.from(Room.class);
-        
+
         Predicate predicate = cb.equal(root.get("capacity"), capacity);
         try {
             cq.select(root).where(predicate);
             Query q = em.createQuery(cq);
             return q.getResultList();
         } finally {
-            em.close();
+                em.close();
         }
     }
 
@@ -149,8 +149,10 @@ public class RoomJpaController implements Serializable {
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
-    
+
 }

@@ -12,7 +12,6 @@ package Service;
 import Persistence.EmployeeJpaController;
 import Persistence.FabricaEMF;
 import Entity.Employee;
-import Entity.Enum.EmployeeType;
 import java.util.Date;
 import java.util.List;
 

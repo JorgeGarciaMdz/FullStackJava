@@ -13,7 +13,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
@@ -122,6 +125,25 @@ public class GuestJpaController implements Serializable {
         }
     }
 
+    public Guest findGuestByDni(Long dni) {
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Guest> cq = cb.createQuery(Guest.class);
+        Root<Guest> root = cq.from(Guest.class);
+
+        Predicate predicate = cb.equal(root.get("dni"), dni);
+        cq.select(root).where(predicate);
+        Query q = em.createQuery(cq);
+        try {
+            return (Guest) q.getSingleResult();
+        } catch (NoResultException ex) {
+            System.out.println("GuestJpaController exception\n\t " + ex.getMessage());
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
     public int getGuestCount() {
         EntityManager em = getEntityManager();
         try {
@@ -134,5 +156,5 @@ public class GuestJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

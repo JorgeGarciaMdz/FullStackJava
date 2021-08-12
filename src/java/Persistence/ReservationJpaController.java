@@ -19,8 +19,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Date;
-import Entity.Room;
-import Entity.Room_;
 import javax.persistence.criteria.JoinType;
 
 /**
@@ -116,8 +114,9 @@ public class ReservationJpaController implements Serializable {
             }
             return q.getResultList();
         } finally {
-            if( em != null )
+            if (em != null) {
                 em.close();
+            }
         }
     }
 
@@ -129,8 +128,8 @@ public class ReservationJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public List<Reservation> findByRoomId( Long id){
+
+    public List<Reservation> findByRoomId(Long id) {
         EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
@@ -138,17 +137,16 @@ public class ReservationJpaController implements Serializable {
         root.fetch("room", JoinType.LEFT);
         int year = new Date().getYear();
         int month = new Date().getMonth();
-        
+
         Predicate[] predicates = new Predicate[3];
-        predicates[0] = cb.equal(root.get(Reservation_.room).get("id"), id); 
-        predicates[1] = cb.greaterThanOrEqualTo(root.get("date_in"), new Date(year, month, 0) );
-        predicates[2] = cb.lessThanOrEqualTo(root.get("date_out"), new Date(year, month,30));
+        predicates[0] = cb.equal(root.get(Reservation_.room).get("id"), id);
+        predicates[1] = cb.greaterThanOrEqualTo(root.get("date_in"), new Date(year, month, 0));
+        predicates[2] = cb.lessThanOrEqualTo(root.get("date_out"), new Date(year, month, 30));
         try {
             cq.select(root).where(predicates);
             return em.createQuery(cq).getResultList();
         } finally {
-            if( em != null)
-                em.close();
+            em.close();
         }
     }
 
@@ -164,5 +162,5 @@ public class ReservationJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

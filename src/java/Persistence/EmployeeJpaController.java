@@ -126,7 +126,6 @@ public class EmployeeJpaController implements Serializable {
         predicates[0] = cb.isNull(root.get("discharge_date"));
         predicates[1] = cb.equal(root.get("user"), user);
         predicates[2] = cb.equal(root.get("password"), pass);
-        //cq.select(root).where(cb.isNull(root.get("discharge_date")));
         try {
             cq.select(root).where(predicates);
             Query q = em.createQuery(cq);

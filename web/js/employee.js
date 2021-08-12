@@ -227,8 +227,8 @@ function submitReserve() {
     if (isvalid) {
         f = new Date();
         console.log(f.getFullYear() + "  " + f.getMonth() );
-        input = new Date(f.getFullYear(), f.getMonth(), day_in);
-        output = new Date(f.getFullYear(), f.getMonth(), day_out);
+        input = formatDate(new Date(f.getFullYear(), f.getMonth(), day_in).toDateString());
+        output = formatDate(new Date(f.getFullYear(), f.getMonth(), day_out).toDateString());
         reserve =
         {
             date_in: input,
@@ -242,12 +242,30 @@ function submitReserve() {
             prefession: profession
         }
         console.log(reserve);
+        fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/reservation/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reserve)
+            
+        }).then( response => response.json())
+            .then( data => {
+                console.log(" Respuesta del back-end " + data);
+            });
     }
 }
 
 function invalid(id) {
     document.getElementById(id).style = "border: 2px dashed red; background-image: linear-gradient(to right, pink, lightgreen);";
     document.getElementById(id).setAttribute("placeholder", "requerido");
+}
+
+function formatDate( date ) {
+    newdate = date.split(" ");
+    date = '';
+    date += newdate[1] + ' ' + newdate[2] + ', ' + newdate[3] + ' 00:00:00 AM';
+    return date;
 }
 
 
