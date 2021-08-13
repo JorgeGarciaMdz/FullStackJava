@@ -14,7 +14,7 @@ function getEmployee() {
         .then(data => console.log(data));
 }
 function newReserve() {
-    let menu = `<div class="container">
+    let menu = `<div class="container" style="padding-bottom: 5%">
                     <div class="row">
                     <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(1)">Simple</button></div>
                 
@@ -51,7 +51,7 @@ async function showRooms(capacity) {
             <td>` + element.floor + `</td>
             <td>` + element.capacity + `</td>
             <td>` + element.price + `</td>
-            <td><button class="btn btn-primary" onclick="detailsRoom( ${element.id}, '${element.door}' )">Detalle</button></td>
+            <td><button class="btn btn-primary" onclick="detailsRoom( ${element.id}, '${element.door}' )">Consultar Agenda</button></td>
           </tr>`
             });
             table += ` </tbody>
@@ -138,7 +138,6 @@ function getDay(day) {
             <div class="row">
                 <div class="col-md-4">Fecha ingreso: ${day_in}</div>
                 <div class="col-md-4">Fecha egreso: ${day_out}</div>
-                <div class="col-md-3"><button class="btn btn-danger" onclick="deshacerForm()">Deshacer</button></div>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -167,7 +166,8 @@ function getDay(day) {
                 <div class="col-md-1"><input type="text" width="10px" id="anio-form"placeholder="1999" size="10" required></div>
             </div>
             <div class="row">
-                <div class="col-md-3"><button class="btn btn-primary" onclick="submitReserve()">Realizar Reserva</button></div>
+                <div class="col-md-4"><button class="btn btn-primary" onclick="submitReserve()">Realizar Reserva</button></div>
+                <div class="col-md-3"><button class="btn btn-danger" onclick="deshacerForm()">Deshacer</button></div>
             </div>
              </div>`
     } else if (day_in !== null && day_out !== null) {
@@ -253,7 +253,15 @@ function submitReserve() {
             .then(data => {
                 console.log(data);
                 if (data !== null) {
-                    let table = `<br><table class="table">
+                    let table = `<div class="container">
+                                    <div class="row" justify-content-md-center>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-5" >
+                                            <h3>Descripcion de Reserva</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <br><table class="table">
                                     <thead>
                                       <tr>
                                         <th scope="col"># Id</th>
@@ -275,7 +283,9 @@ function submitReserve() {
                                           <td>${data.date_in}</td>
                                           <td>${data.date_out}</td>
                                         </tr>
-                                    </tgody></table>`;
+                                    </tgody></table>
+                                    </div>
+                                    </div>`;
                     document.getElementById("form-reserve").innerHTML = table;
                 }
             });

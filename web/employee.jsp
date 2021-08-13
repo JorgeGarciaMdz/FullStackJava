@@ -30,14 +30,14 @@
             <% if (session.getAttribute("user") != null) { %>
             <nav class="nav">
                 <a class="nav-link active" aria-current="page" onclick="newReserve()">Nueva Reserva</a>
+            <!--   <a class="nav-link" href="#">Link</a>
                 <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
             </nav>
             <% } %>
         </nav>
         <% if (session.getAttribute("user") != null) { %>
-        <div id="root"></div>
+        <div id="root" class="root"></div>
         <script>
             var employee_id = <%= session.getAttribute("user_id").toString() %>
         </script>
