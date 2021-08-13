@@ -21,7 +21,10 @@
                         response.sendRedirect("index.jsp"); %>
                 <% } else {%>
                 <form class="d-flex" name="logout" action="index" method="GET">
-                    <span class="navbar-brand"> <%= session.getAttribute("type")%> </span>
+                    <% if( session.getAttribute("type") != null ){ %>
+                    <!-- <span class="navbar-brand"> <%= session.getAttribute("type")%> </span> -->
+                    <span class="navbar-brand">Empleado  </span>
+                    <% }%>
                     <span class="navbar-brand"> <%= session.getAttribute("user")%> </span>
                     <button class="btn btn-outline-info" type="submit">Logout</button>
                 </form>
@@ -46,8 +49,6 @@
         <script src="js/jquery-1.4.4.min.js" ></script>
         <script src="js/bootstrap.js"></script>
         <script src="js/bootstrap.bundle.js"></script>
-        
-
         <% }%>
     </body>
 </html>

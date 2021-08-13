@@ -25,8 +25,10 @@ import javax.servlet.http.HttpSession;
 public class Index extends HttpServlet {
 
     private final EmployeeService es = new EmployeeService();
+    private final InsertDB idb = new InsertDB();
     
     public Index(){
+        idb.init();
     }
 
     /**

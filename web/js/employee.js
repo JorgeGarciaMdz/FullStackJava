@@ -16,15 +16,13 @@ function getEmployee() {
 function newReserve() {
     let menu = `<div class="container" style="padding-bottom: 5%">
                     <div class="row">
-                    <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(1)">Simple</button></div>
-                
-                    <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(2)">Doble</button></div>
-                
-                    <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(3)">Tripe</button></div>
-                
-                    <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(4)">Multiple</button></div>
+                        <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(1)">Simple</button></div>
+                        <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(2)">Doble</button></div>
+                        <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(3)">Tripe</button></div>
+                        <div class="col-md-2"><button class="btn btn-secondary" onclick="showRooms(4)">Multiple</button></div>
                     </div>
-                </div><div id="rooms"></div>`;
+                </div>
+                <div id="rooms"></div>`;
     document.getElementById("root").innerHTML = menu;
 }
 
@@ -36,6 +34,7 @@ async function showRooms(capacity) {
     <th scope="col">Piso</th>
     <th scope="col">Capacidad</th>
     <th scope="col">Precio</th>
+    <th scope=""></th>
     <th scope=""></th>
   </tr>
 </thead>
@@ -52,6 +51,7 @@ async function showRooms(capacity) {
             <td>` + element.capacity + `</td>
             <td>` + element.price + `</td>
             <td><button class="btn btn-primary" onclick="detailsRoom( ${element.id}, '${element.door}' )">Consultar Agenda</button></td>
+            <td><button class="btn btn-primary" onclick="detailsRoomReservation( ${element.id}, '${element.door}')">Consultar Reservas</button></td>
           </tr>`
             });
             table += ` </tbody>
@@ -66,28 +66,33 @@ function detailsRoom(id_room, room_door) {
     let calendar = `<br><p class="lead">
     Habitacion: <b>${room_door}</b> <br/> Para realizar una reserva seleccione dia de entrada y dia de salida` + `
     </p>
-<table class="table table-bordered border-primary">
-<thead>
-  <tr>
-    <th scope="col">Domingo</th>
-    <th scope="col">Lunes</th>
-    <th scope="col">Martes</th>
-    <th scope="col">Miercoles</th>
-    <th scope="col">Jueves</th>
-    <th scope="col">Viernes</th>
-    <th scope="col">Sabado</th>  
-  </tr>
-</thead>
-<tbody>`;
+    <div class="container">
+        <div class="row">
+            <table class="table table-bordered border-primary">
+            <thead>
+              <tr>
+                <th scope="col">Domingo</th>
+                <th scope="col">Lunes</th>
+                <th scope="col">Martes</th>
+                <th scope="col">Miercoles</th>
+                <th scope="col">Jueves</th>
+                <th scope="col">Viernes</th>
+                <th scope="col">Sabado</th>  
+              </tr>
+            </thead>
+            <tbody>`;
     fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/reservation?room_id=' + id_room)
         .then(response => response.json())
         .then(data => {
-
-            document.getElementById("detailsRoom").innerHTML = calendar;
             console.log(data);
-            calendar += generateCalendar() + `</table><div id="form-reserve"></div>`;
+            calendar += generateCalendar() + `</table>
+                        </div>
+                    <div class="row" id="modal-dia"></div>
+                    <div class="row" id="form-reserve"></div>
+                </div>`;
             document.getElementById("detailsRoom").innerHTML = calendar;
             selectedDay(data);
+            launchModalDay("Seleccione dia Inicio", "Reserva", "modal-dia");
         });
 }
 
@@ -114,13 +119,17 @@ function generateCalendar() {
 }
 
 function selectedDay(data) {
-    data.forEach(d => {
-        console.log(new Date(d.date_in).getDate());
-        console.log(new Date(d.date_out).getDate());
+    let color = ["#ffc342", "#cdff42", "#42ffa0", "#42dbff"];
+    let j = 0;
+    data.forEach(d=> {
         for (i = new Date(d.date_in).getDate(); i < new Date(d.date_out).getDate() + 1; i++) {
-            document.getElementById(i).style.backgroundColor = "blue";
+            document.getElementById(i).style.backgroundColor = `${color[j]}`;
             document.getElementById(i).onclick = null;
         }
+        if( (j % 3) === 0){
+            j = 0;
+        }
+        j++;
     });
 }
 
@@ -130,7 +139,7 @@ var style_cell = null;
 function getDay(day) {
     if (day_in === null) {
         day_in = day;
-        alert("Seleccione otro dia");
+        launchModalDay("Seleccione dia Fin", "Reserva", "modal-dia");
     } else
         day_out = day;
     if (day_in !== null && day_out !== null && day_in < day_out) {
@@ -175,6 +184,30 @@ function getDay(day) {
         day_in = null;
         day_out = null;
     }
+}
+
+function launchModalDay(messageBody, messageTitle, idDiv) {
+    let modal = `</div>
+                    <div class="modal fade" id="modal-dia-selected" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">${messageTitle}</h5>
+                            <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                          </div>
+                          <div class="modal-body">
+                            ${messageBody}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>`;
+    document.getElementById(idDiv).innerHTML = modal;
+    modalDia = new bootstrap.Modal(document.getElementById('modal-dia-selected'), { keyborad: false });
+    modalDia.toggle();
 }
 
 function deshacerForm() {
@@ -252,11 +285,14 @@ function submitReserve() {
         }).then(response => response.json())
             .then(data => {
                 console.log(data);
+                if( data.id > 0 ){
+                    launchModalDay("Su solicitud ha sido procesada con éxito!!", "Confirmacion Reserva", "modal-dia");
+                }
                 if (data !== null) {
                     let table = `<div class="container">
                                     <div class="row" justify-content-md-center>
                                         <div class="col-md-2"></div>
-                                        <div class="col-md-5" >
+                                        <div class="col-md-7" >
                                             <h3>Descripcion de Reserva</h3>
                                         </div>
                                     </div>
@@ -283,7 +319,7 @@ function submitReserve() {
                                           <td>${data.date_in}</td>
                                           <td>${data.date_out}</td>
                                         </tr>
-                                    </tgody></table>
+                                    </tbody></table>
                                     </div>
                                     </div>`;
                     document.getElementById("form-reserve").innerHTML = table;
@@ -304,20 +340,55 @@ function formatDate(date) {
     return date;
 }
 
-async function showCreateReserve(data) {
+function detailsRoomReservation(room_id, door) {
+    fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/reservation?room_id=' + room_id)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("detailsRoom").innerHTML = getTableReserve(data, door);
+        });
 
-
-    await data.forEach(guest => {
-        table += `<tr>
-                  <th scope="row"></th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>`
-    });
-    table += `</tbody></table>`;
-    document.getElementById("form-reserve").innerHTML = table;
 }
 
+function getTableReserve(data, door) {
+    let table = `<div class="container">
+                                    <div class="row" justify-content-md-center style="padding-top: 5%; padding-bottom: 3%;">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-7" >
+                                            <h3>Reservas asignadas para la habitacion <b>${door}</b></h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <br><table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col"># Id</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Apellido</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Profesion</th>
+                                        <th scope="col">Fecha Ingreso</th>
+                                        <th scope="col">Fecha Egreso</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>`;
+
+
+    data.forEach(r => {
+        table += `
+                <tr>
+                  <th scope="row"> ${r.id}</th>
+                  <td>${r.guest.name}</td>
+                  <td>${r.guest.lastname}</td>
+                  <td>${r.guest.dni}</td>
+                  <td>${r.guest.profession}</td>
+                  <td>${r.date_in}</td>
+                  <td>${r.date_out}</td>
+                </tr>
+                `;
+    });
+    table += `</tbody></table>
+                </div>
+                </div>`;
+    return table;
+}
 

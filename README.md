@@ -10,7 +10,7 @@ Se utiliza la libreria gson-2.8.5.jar de google para parsear objetos a json y vi
 En cada entidad esta la definicion de cada tabla y columna con sus respcetivas restricciones.
 
 Ejecucion:
-Se ejecuta el proyecto web, una vez levantado, se debe ejecutar la clase "Main.java" para poblar la base de datos.
+Se ejecuta el proyecto web.
 Hay dos tipos de usuarios que utilizan el sistema, el usuario "empleado" y usuario "administrador"
 Usuario empleado:
   user: jor123

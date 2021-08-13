@@ -143,7 +143,7 @@ public class ReservationJpaController implements Serializable {
         predicates[1] = cb.greaterThanOrEqualTo(root.get("date_in"), new Date(year, month, 0));
         predicates[2] = cb.lessThanOrEqualTo(root.get("date_out"), new Date(year, month, 30));
         try {
-            cq.select(root).where(predicates);
+            cq.select(root).where(predicates).orderBy(cb.asc(root.get("date_in")));
             return em.createQuery(cq).getResultList();
         } finally {
             em.close();
