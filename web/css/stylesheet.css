@@ -39,5 +39,13 @@ and open the template in the editor.
     padding-top: 5%;
 }
 
+.body-admin {
+    background: rgb(131,58,180);
+    background: -moz-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(248,66,255,1) 38%, rgba(70,95,147,1) 99%);
+    background: -webkit-linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(248,66,255,1) 38%, rgba(70,95,147,1) 99%);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(248,66,255,1) 38%, rgba(70,95,147,1) 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#465f93",GradientType=1); 
+}
+
 
 
