@@ -40,6 +40,11 @@ public class ReservationService {
         System.out.println("reservation room " + room_id);
         return reservationJpaController.findByRoomId(new Long(room_id));
     }
+    
+    public List<Reservation> findByDate(String date_from, String date_to){
+        System.out.println( date_from + "   " + date_to);
+        return reservationJpaController.findByDate(date_from, date_to);
+    }
 
     public List<Reservation> findAll() {
         return reservationJpaController.findReservationEntities();

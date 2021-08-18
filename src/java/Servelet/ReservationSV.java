@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Entity.Reservation;
-import java.util.Date;
 
 /**
  *
@@ -82,6 +81,12 @@ public class ReservationSV extends HttpServlet {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             out.print(_gson.toJson(rs.findByRoomId(Integer.parseInt(request.getParameter("room_id")))));
+        } else if( request.getParameter("date_from") != null && request.getParameter("date_to") != null){
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            out.print(_gson.toJson(rs.findByDate(request.getParameter("date_from"), request.getParameter("date_to"))));
+            out.flush();
+            return;
         } else if (request.getPathInfo() == null || request.getPathInfo().equals("/")) {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();

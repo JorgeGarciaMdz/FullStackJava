@@ -6,7 +6,7 @@
 
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <link rel="stylesheet" href="css/bootstrap.min.css">
+            <link rel="stylesheet" href="css/bootstrap.css">
             <link rel="stylesheet" href="css/stylesheet.css">
             <title>Administrator</title>
         </head>
@@ -33,15 +33,15 @@
                 </div>
                 <% if (session.getAttribute("type") !=null) { %>
                     <nav class="nav">
-                        <a class="nav-link active" aria-current="page" onclick="showAllReservation()">Consultar
-                            Reservas</a>
-                        <!--   <a class="nav-link" href="#">Link</a>
-                    <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" id="link-show-reservation" aria-current="page" onclick="showAllReservation()">Consultar
+                            Reservas Por Fecha</a>
+                        <a class="nav-link" id="link-show-reservation-employee" onclick="showAllEmployee()">Consultar Reservas Por Empleado</a>
+                <!--    <a class="nav-link" href="#">Link</a>
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
                     </nav>
                     <% } %>
             </nav>
-            <div id="root" class="container"></div>
+            <div id="root" class="container" style="padding-top: 2%;"></div>
         </body>
         <% if (session.getAttribute("type") !=null) { %>
             <script src="./js/admin.js"></script>

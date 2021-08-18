@@ -149,6 +149,24 @@ public class ReservationJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Reservation> findByDate(String date_from, String date_to){
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+        
+        Predicate[] predicates = new Predicate[2];
+        predicates[0] = cb.greaterThanOrEqualTo(root.get("date_in"), date_from);
+        predicates[1] = cb.lessThanOrEqualTo(root.get("date_out"), date_to);
+        
+        try {
+            cq.select(root).where(predicates).orderBy(cb.asc(root.get("date_in")));
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     public int getReservationCount() {
         EntityManager em = getEntityManager();
