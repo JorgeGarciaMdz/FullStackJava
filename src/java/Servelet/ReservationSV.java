@@ -81,6 +81,14 @@ public class ReservationSV extends HttpServlet {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             out.print(_gson.toJson(rs.findByRoomId(Integer.parseInt(request.getParameter("room_id")))));
+            out.flush();
+        } else if( request.getParameter("date_from") != null && request.getParameter("date_to") != null && 
+                    request.getParameter("id_employee") != null ){
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            out.print(_gson.toJson(rs.findByDateAndEmployee(request.getParameter("date_from"), request.getParameter("date_to"),
+                    request.getParameter(("id_employee")))));
+            out.flush();
         } else if( request.getParameter("date_from") != null && request.getParameter("date_to") != null){
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();

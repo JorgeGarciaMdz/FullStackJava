@@ -45,6 +45,10 @@ public class ReservationService {
         System.out.println( date_from + "   " + date_to);
         return reservationJpaController.findByDate(date_from, date_to);
     }
+    
+    public List<Reservation> findByDateAndEmployee( String date_from, String date_to, String id_employee){
+        return reservationJpaController.findByDateAndEmployee(date_from, date_to, id_employee);
+    }
 
     public List<Reservation> findAll() {
         return reservationJpaController.findReservationEntities();

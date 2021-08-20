@@ -5,6 +5,7 @@
  */
 package Persistence;
 
+import Entity.Person_;
 import Entity.Reservation;
 import Entity.Reservation_;
 import Persistence.exceptions.NonexistentEntityException;
@@ -161,6 +162,26 @@ public class ReservationJpaController implements Serializable {
         predicates[1] = cb.lessThanOrEqualTo(root.get("date_out"), date_to);
         
         try {
+            cq.select(root).where(predicates).orderBy(cb.asc(root.get("date_in")));
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Reservation> findByDateAndEmployee( String date_from, String date_to, String id_employee){
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+        root.fetch("employee", JoinType.LEFT);
+        
+        Predicate[] predicates = new Predicate[3];
+        predicates[0] = cb.greaterThanOrEqualTo(root.get("date_in"), date_from);
+        predicates[1] = cb.lessThanOrEqualTo(root.get("date_out"), date_to);
+        predicates[2] = cb.equal(root.get(Reservation_.employee).get("id"), id_employee);
+        
+        try{
             cq.select(root).where(predicates).orderBy(cb.asc(root.get("date_in")));
             return em.createQuery(cq).getResultList();
         } finally {

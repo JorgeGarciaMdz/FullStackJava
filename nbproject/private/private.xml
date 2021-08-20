@@ -5,6 +5,8 @@
         <group>
             <file>file:/home/jorge/NetBeansProjects/Garcia_Jorge_COM1/src/java/Persistence/ReservationJpaController.java</file>
             <file>file:/home/jorge/NetBeansProjects/Garcia_Jorge_COM1/src/java/Servelet/ReservationSV.java</file>
+            <file>file:/home/jorge/NetBeansProjects/Garcia_Jorge_COM1/src/java/Service/ReservationService.java</file>
+            <file>file:/home/jorge/NetBeansProjects/Garcia_Jorge_COM1/src/java/Entity/Reservation.java</file>
         </group>
     </open-files>
 </project-private>
