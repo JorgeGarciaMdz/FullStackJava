@@ -47,5 +47,11 @@ and open the template in the editor.
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#465f93",GradientType=1); 
 }
 
+.form-employee {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin: 3%;
+}
+
 
 

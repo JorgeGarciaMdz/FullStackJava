@@ -102,7 +102,7 @@ function getTableReservations(data, idDiv) {
   document.getElementById(idDiv).innerHTML = table += `</tbody>  </table>`;
 }
 
-function launchModal(messageBody, messageTitle, idDiv) {
+function launchModal(messageBody, messageTitle, idDiv, callback = null) {
   let modal = `</div>
                     <div class="modal fade" id="modal-generic" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -115,7 +115,8 @@ function launchModal(messageBody, messageTitle, idDiv) {
                             ${messageBody}
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="${(callback === null ? '' : callback)}">Close</button>
                           </div>
                         </div>
                       </div>
@@ -128,13 +129,13 @@ function launchModal(messageBody, messageTitle, idDiv) {
 
 // Mostrando todos los empleados activos
 function showAllEmployee() {
-  if( show_reservation_employee ) {
+  if (show_reservation_employee) {
     fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee')
-    .then(request => request.json())
-    .then(data => {
-      console.log(data);
-      document.getElementById("root").innerHTML = getTableEmployee(data);
-    });
+      .then(request => request.json())
+      .then(data => {
+        console.log(data);
+        document.getElementById("root").innerHTML = getTableEmployee(data);
+      });
     show_reservation_employee = false;
   } else {
     document.getElementById("root").innerHTML = "";
@@ -175,7 +176,9 @@ function getTableEmployee(data) {
                 <td>${d.birthday}</td>
                 <td>${d.admission_date}</td>
                 <td>${d.type}</td>
-                <td><button class="btn btn-info" onclick="getReservationEmployee(${d.id})">Consultar Reservas</button></td>
+                <td>${(d.discharge_date !== undefined ? '---' :
+        `<button class="btn btn-info" onclick="getReservationEmployee(${d.id})">Consultar Reservas</button>`)}
+                </td>
               </tr>
               `;
   });
@@ -198,4 +201,218 @@ function checkReservationEmployee(idEmployee) {
         getTableReservations(data, "table-reservation");
       });
   }
+}
+
+function showAdminEmployee() {
+  fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("root").innerHTML = getAdminTableEmployee(data);
+    });
+}
+
+function getAdminTableEmployee(data) {
+  let table = `<div class="row">
+                <div class="col-md-10">
+                  <h3>Gestionar Empleados</h3>
+                </div>
+                <div class="col">
+                  <button class="btn btn-primary" onclick="newEmployee()">Nuevo</button>
+                </div>
+              </div>
+              <div class="row"><table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Fecha Nacimiento</th>
+                    <th scope="col">Nombre Usuario</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Fecha Ingreso</th>
+                    <th scope="col">Fecha Baja</th>
+                    <th scope="col"></div>
+                    <th scope="col"></div>
+                  </tr>
+                </thead>
+                <tbody>`;
+  data.forEach(d => {
+    table += `<tr>
+                <th scope="row">${d.id}</th>
+                <td>${d.name}</td>
+                <td>${d.lastname}</td>
+                <td>${d.dni}</td>
+                <td>${d.birthday}</td>
+                <td>${d.user}</td>
+                <td>${d.type}</td>
+                <td>${d.admission_date}</td>
+                <td>${(d.discharge_date === undefined ? '---' : d.discharge_date)}</td>
+                <td>
+                  <button class="btn btn-warning"  
+                  onclick="editEmployee(${d.id})">Editar</button>
+                </td>
+                <td>
+                  ${(d.discharge_date === undefined ? '<button class="btn btn-danger" onclick="downEmployee(' + d.id + ')">Baja</button>' : '---')}
+                </td>
+              </tr>`;
+  });
+  return table += `</tbody>
+                  </table>
+                </div>
+                <div class="row" id="delete-employee"></div>`;
+}
+
+function newEmployee(data = undefined) {
+  let birthday = "";
+  if ( data !== undefined) {
+    let date = new Date(data.birthday);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    if (month < 10) {
+      birthday += year + "-0" + month;
+    } else {
+      birthday += year + "-" + month;
+    }
+    if ( day < 10 ){
+      birthday += "-0" + day;
+    } else {
+      birthday += "-" + day;
+    }
+  } else {
+    birthday = "1990-01-01";
+  }
+  form = `<div class="row form-employee">
+            <div class="col">
+              <label class="form-label">Nombre</label>
+              <input type="text" id="form-name" class="form-control" placeholder="Nombre" aria-label="Nombre"
+              value="${data === undefined ? '' : data.name}">
+            </div>
+            <div class="col">
+              <label class="form-label">Apellido</label>
+              <input type="text" id="form-lastname" class="form-control" placeholder="Apellido" aria-label="Apellido"
+              value="${data === undefined ? '' : data.lastname}">
+            </div>
+            </div>
+            <div class="row form-employee">
+              <div class="col">
+                <label class="form-label">DNI</label>
+                <input type="text" id="form-dni" class="form-control" placeholder="DNI" aria-label="DNI"
+                value="${data === undefined ? '' : data.dni}">
+              </div>
+              <div class="col">
+                <label class="form-label">Fecha Nacimiento</label>
+                <input type="date" id="form-birthday" class="form-control"
+                value="${birthday}">
+              </div>
+            </div>
+            <div class="row form-employee">
+              <div class="col">
+                <label class="form-label">Nombre de Usuario</label>
+                <input type="text" id="form-user" class="form-control" placeholder="Nombre Usuario" aria-label="Nombre Usuario"
+                value="${data === undefined ? '' : data.user}">
+              </div>
+              <div class="col">
+                <label class="form-label">Contraseña</label>
+                <input type="text" id="form-password" class="form-control" placeholder="Contraseña" aria-label="Contraseña">
+              </div>
+            </div>
+            <div class="row form-employee">
+              <div class="col-md-6">
+                <label class="form-label">Tipo</label>
+                <select id="form-type" class="form-select">
+                  <option selected>employee</option>
+                  <option>administrator</option>
+                </select>
+              </div>
+            </div>
+            <div class="row form-employee">
+              <div class="col">
+                <button class="btn btn-primary" onclick="getDataFormEmployee(
+                  ${(data === undefined? undefined: data.id)},
+                  '${(data === undefined? undefined: data.admission_date)}')">Enviar</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-info" onclick="showAdminEmployee()">Volver</button>
+              </div>
+            </div>
+            <div class="row" id="form-modal"></div>`;
+  document.getElementById("root").innerHTML = form;
+}
+
+function getDataFormEmployee( id = undefined, admission_date = undefined) {
+  let name = document.getElementById("form-name").value;
+  let lastname = document.getElementById("form-lastname").value;
+  let dni = document.getElementById("form-dni").value;
+  let birthday = document.getElementById("form-birthday").value;
+  let user = document.getElementById("form-user").value;
+  let password = document.getElementById("form-password").value;
+  let type = document.getElementById("form-type").value;
+  let data = null;
+  let method = 'POST';
+  
+  if( id === undefined ){
+    data = {
+      name: name,
+      lastname: lastname,
+      dni: dni,
+      birthday: birthday,
+      user: user,
+      password: password,
+      type: type,
+    }
+  } else {
+    data = {
+      id: id,
+      name: name,
+      lastname: lastname,
+      dni: dni,
+      birthday: birthday,
+      user: user,
+      password: password,
+      type: type,
+      admission_date: admission_date,
+    }
+    method = 'PUT';
+  }
+
+  let parameter = {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  }
+
+  fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee', parameter)
+    .then(response => {
+      console.log("status: " + response.status);
+      if (response.status === 500) {
+        launchModal("No se ha podido realizar la transaccion", "Error de Servidor", "form-modal", 'showAdminEmployee()');
+      } else if (response.status === 400) {
+        launchModal("Los datos enviados tienen errores o hay campos vacios", "Error de Datos", "form-modal", 'showAdminEmployee()');
+      } else {
+        launchModal("Se ha realizado la transaccion con éxito!", "Datos Grabados", "form-modal", 'showAdminEmployee()');
+      }
+    });
+}
+
+function editEmployee(id_employee) {
+  fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee?id=' + id_employee)
+    .then(response => response.json())
+    .then(body => {
+      newEmployee(body);
+    });
+}
+
+function downEmployee(id_employee) {
+  fetch('http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee?id='+ id_employee, {method: 'DELETE'})
+    .then( response => {
+      if (response.status === 200) {
+        launchModal("Se dio de baja al empleado", "Baja Exitosa","delete-employee", "showAdminEmployee()");
+      } else {
+        launchModal("Ha ocurrido un error al procesar la solicitud", "Error de Procesamiento", "delete-employee");
+      }
+    })
 }

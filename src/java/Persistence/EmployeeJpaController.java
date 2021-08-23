@@ -152,9 +152,10 @@ public class EmployeeJpaController implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
         Root<Employee> root = cq.from(Employee.class);
-        Predicate predicate = cb.isNull(root.get("discharge_date"));
+        //Predicate predicate = cb.isNull(root.get("discharge_date"));
         try {
-            cq.select(root).where(predicate);
+            //cq.select(root).where(predicate);
+            cq.select(root);
             Query q = em.createQuery(cq);
             return (List<Employee>) q.getResultList();
         } finally {

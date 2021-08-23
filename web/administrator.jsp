@@ -36,6 +36,7 @@
                         <a class="nav-link" id="link-show-reservation" aria-current="page" onclick="showAllReservation()">Consultar
                             Reservas Por Fecha</a>
                         <a class="nav-link" id="link-show-reservation-employee" onclick="showAllEmployee()">Consultar Reservas Por Empleado</a>
+                        <a class="nav-link" id="link-show-reservation-employee" onclick="showAdminEmployee()">Gestionar Empleados</a>
                 <!--    <a class="nav-link" href="#">Link</a>
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
                     </nav>
