@@ -58,13 +58,55 @@ Devuelve un objeto del tipo empleado con el id que se pasa como parametro
 **http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/**
 
 {
+
     "user": "user_name",
+
     "password": "password",
-    "admission_date": "Aug 24, 2021 5:56:52 PM",
+
     "type": "employee",
+
     "dni": 123456,
+
     "name": "name",
+
     "lastname": "lastname",
+
     "birthday": "Aug 24, 2021 5:56:52 PM"
+
 }
+
+#### PUT
+
+**http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/**
+
+{
+
+    "user": "user",
+
+    "password": "password",
+
+    "admission_date": "Aug 24, 2021 6:05:11 PM",
+
+    "type": "employee",
+
+    "id": 1,
+
+    "dni": 123456,
+
+    "name": "juan",
+
+    "lastname": "pedro",
+
+    "birthday": "Aug 24, 2021 5:56:52 PM"
+
+}
+
+#### DELETE
+
+**http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/?id=id_employee**
+
+
+### Guest
+
+
 
