@@ -33,5 +33,38 @@ Usuario empleado:
 Usuario administrador:
 
   user: admin
-  
+
   password: admin
+
+## API
+
+### Employee
+
+Todo lo relacionado a la entidad empleado
+
+#### GET
+
+**http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/**
+
+Devuelve una lista de objetos de todos los empleados
+
+
+**http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/?id=id_empleado**
+
+Devuelve un objeto del tipo empleado con el id que se pasa como parametro
+
+#### POST
+
+**http://localhost:8080/Garcia_Jorge_COM1/api/v1/employee/**
+
+{
+    "user": "user_name",
+    "password": "password",
+    "admission_date": "Aug 24, 2021 5:56:52 PM",
+    "type": "employee",
+    "dni": 123456,
+    "name": "name",
+    "lastname": "lastname",
+    "birthday": "Aug 24, 2021 5:56:52 PM"
+}
+
